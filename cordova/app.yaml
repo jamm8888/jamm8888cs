@@ -1,0 +1,32 @@
+service: cordova
+runtime: php55
+api_version: 1
+threadsafe: true
+
+handlers:
+- url: /css
+  static_dir: www/css
+
+- url: /images
+  static_dir: www/images
+
+- url: /js
+  static_dir: www/js
+
+- url: /fonts
+  static_dir: www/fonts
+
+- url: /*\.html
+  static_files: www/index.html
+  upload: www/index.html
+
+- url: /(.*\.(gif|png|jpg|html))$
+  static_files: www/\1
+  upload: www/(.*\.(gif|png|jpg|html)$)
+
+- url: /
+  script: index.php
+
+
+
+

@@ -1,0 +1,67 @@
+body {
+    background-color: #030303;
+    color: #FFFFFF;
+}
+.header {
+    width: 99%;
+    padding: 20px;
+    color: #c0ccc0;
+}
+
+.left {
+    float: left;
+    width: 30%;
+    height: 50%;
+    top: 100px;
+}
+
+.right {
+    float: left;
+    text-align: center;
+    width: 65%;
+    height: 50%;
+}
+
+.footer {
+    float: left;
+    width: 100%;
+    text-align: right;
+}
+
+.diagonal {
+    background-color: #efebeb;
+} 
+
+<!-- http://stackoverflow.com/questions/8603914/center-image-in-table-td-in-css -->
+table {
+    margin: 0 auto;
+}
+
+td{
+    width: 50px;
+}
+
+td, th{
+    border-width: 1px;
+    border-color: #efebeb;
+    border-style: solid;
+    text-align: center;
+    padding: 5px;
+}
+
+.align-left {
+    text-align: left;
+}
+
+ul{
+    list-style-type: none;
+    display: block;
+}
+
+li, a {
+    color: #FFFFFF;
+}
+
+li > a:hover{
+    background-color: #606060;
+}

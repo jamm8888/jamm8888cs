@@ -1,0 +1,162 @@
+@import url(http://fonts.googleapis.com/css?family=Raleway:400,700|3d-float);
+@import url(https://fonts.googleapis.com/css?family=Kurale&effect=shadow-multiple|3d-float);
+@import url(https://fonts.googleapis.com/css?family=Carter+One&effect=shadow-multiple|3d-float);
+
+body {
+  background: #c1e1ec;
+  position: relative;
+  line-height: 1.5;
+  font-family: 'Raleway', sans-serif;
+  margin-top: 40px;
+}
+
+h1, h2 {
+  font-weight: 700;
+}
+
+h3 span {
+  color: #286090;
+}
+
+.emulateError {
+  width: 95%;
+}
+
+.jumbotron {
+  border-radius: 0px;
+  background: #5fb3ce;
+  margin-bottom: 0;
+  font-family: 'Raleway', sans-serif;
+}
+
+.jumbotron button {
+  margin-top: 10px;
+}
+
+#main-container {
+  margin-top: 30px;
+}
+
+section {
+  padding: 10px 0;
+  border-bottom: 1px solid #c1e1ec;
+}
+
+.heading {
+    padding-top: 10px;
+}
+
+#web-development,
+#mobile-development {
+  padding-bottom: 0;
+}
+
+section:last-child {
+  border-bottom: none;
+}
+
+/*
+#nav nav {
+  background: #4baac8;
+}*/
+
+.nav a {
+  color: black;
+  font-style: italic;
+}
+
+.nav li a:hover,
+.nav li a:focus {
+  background: #86c5da;
+}
+
+.nav .active {
+  font-weight: bold;
+  background: #72bcd4;
+}
+
+.nav .nav {
+  display: none;
+}
+
+.nav .active .nav {
+  display: block;
+}
+
+.nav .nav a {
+  font-weight: normal;
+  font-size: .85em;
+}
+
+.nav .nav span {
+  margin: 0 5px 0 2px;
+}
+
+.nav .nav .active a,
+.nav .nav .active:hover a,
+.nav .nav .active:focus a {
+  font-weight: bold;
+  padding-left: 30px;
+  border-left: 5px solid black;
+}
+
+.nav .nav .active span,
+.nav .nav .active:hover span,
+.nav .nav .active:focus span {
+  display: none;
+}
+
+.application {
+  border-top: 1px solid #c1e1ec;
+}
+
+.affix-top {
+  position: relative;
+}
+
+.affix {
+  top: 20px;
+}
+
+.affix, 
+.affix-bottom {
+    width: 213px;
+}
+
+.affix-bottom {
+  position: absolute;
+}
+
+#minreqtable, #minreqtable tr, #minreqtable tr td, #minreqtable th {
+    border: 1px solid #000000;
+}
+
+#minreqtable tr td{
+    width: 25%;
+}
+
+.screenshot {
+  padding: 2%;
+  width: 20%;
+}
+.screenshot2 {
+  padding: 2%;
+  width: 30%;
+}
+
+footer {
+  border-top: 1px solid #c1e1ec;
+  height: 50px;
+}
+
+footer p {
+  line-height: 50px;
+  margin-bottom: 0;
+}
+
+@media (min-width:1200px) {
+  .affix, 
+  .affix-bottom {
+    width: 263px;
+  }
+}

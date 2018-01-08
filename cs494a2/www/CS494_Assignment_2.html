@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Javascript Multiplication</title>
+
+<script type="text/javascript" src="js/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="js/jquery.validate.min.js"></script>
+<script type="text/javascript">
+//<![CDATA[
+	$(document).ready(function() {
+
+		$("#frm").validate({
+			rules: {
+				// minval validation
+				minval: {
+				  digits: true,
+				  required: true,
+				  min: 0,
+				  max: 100, 
+				  minlength: 1
+				},
+				// maxval validation
+				maxval: {
+				  digits: true,
+				  required: true,
+				  min: 0,
+				  max: 100,
+				  minlength: 1
+				}
+			}
+		});
+
+		$("#maxval").bind('blur', function() {
+			// https://api.jquery.com/blur/
+			
+			// after the input has been clicked and you click out of it check the values
+			checkValues($("#minval").val(),$("#maxval").val());
+			
+		});
+
+		$("#minval").bind('blur', function() {
+			// https://api.jquery.com/blur/
+			
+			// after the input has been clicked and you click out of it check the values
+			checkValues($("#minval").val(),$("#maxval").val());
+			
+		}); 
+
+		$("#submitBtn").click(function (e) {
+			// resource
+			// http://css-tricks.com/return-false-and-prevent-default/
+			if(checkValues($("#minval").val(), $("#maxval").val()))
+				generateTable();
+			return false;
+		});
+
+		function createArray(min, max){
+
+			/*
+			resources
+			http://stackoverflow.com/questions/9724412/how-do-i-declare-two-dimensional-arrays-in-javascript
+			http://www.dreamincode.net/forums/topic/70647-multiplication-table-generation/
+			*/
+			
+			// add one for the heading column and to count the last number
+			var step = max - min + 2;
+			// set minVal to one less than the min
+			var minVal = min - 1;
+			
+			//declare the array
+			var arr = [];
+			
+			for(var x = 0; x < step; x++){
+				arr[x] = [];    
+				for(var y = 0; y < step; y++){ 
+					// if this is the first row, only display the numbers to be multiplied
+					if(x == 0)
+						arr[x][y] = y+minVal;
+					// if this is the first col, only display the numbers to be multiplied
+					else if(y == 0)
+						arr[x][y] = x+minVal;
+					// otherwise multiply the values
+					else	
+						arr[x][y] = (x+minVal) * (y+minVal);  
+				}
+
+			}
+			
+			// clear the array at location 0, 0
+			arr[0][0] = "";
+			return arr;
+		}
+		
+		function checkValues(min, max){
+			// resource
+			// http://forum.jquery.com/topic/disable-enable-button-in-form
+			// remove and add visibility to button based on input - chose not to use
+
+			max = parseInt(max);
+			min = parseInt(min);
+			
+			if(!min || !max || min > max){
+				// send an alert
+				$("#errorlist").text("Minimum value cannot be less than the maximum value.");	
+				$("#multiplicationTable").hide();
+				return false;
+				
+			} else {	
+			
+				// remove any text in errorlist
+				$("#errorlist").text(" ");
+				return true;		
+			
+			}
+			
+		}
+												
+		function generateTable(){
+
+			// resource
+			// CS494 Videos
+
+			// store the min and max variables
+			var min = parseInt($("#minval").val());
+			var max = parseInt($("#maxval").val());
+			
+			var tableArray = createArray(min,max);	
+
+			displayTable(tableArray);
+			$("#multiplicationTable").show();
+
+		}
+
+		function displayTable(tableArray){
+
+			// resource
+			// CS494 Videos
+			
+			// get the length of the array
+			var arrLen = tableArray.length;
+			// get the second dimension of the array
+			var arrWid = tableArray[0].length;
+
+			// display the table key
+			var mtable = "<table id='multiplication'>";
+			
+			// fill the table with rows, cols and values
+			for(var x = 0; x < arrLen; x++){
+				
+				// start the row
+				mtable = mtable + "<tr>";
+				
+				// build the cols
+				for(var y = 0; y < arrWid; y++){ 
+					
+					if(x == 0 || y == 0){
+						mtable = mtable + "<td class='tdhead'>" + tableArray[x][y] + "</td>";
+					}
+					else
+						mtable = mtable + "<td>" + tableArray[x][y] + "</td>";
+					   
+				}    
+				
+				// end the row
+				mtable = mtable + "</tr>";
+			}
+			
+			// end the table
+			mtable = mtable + "</table>";
+
+			// put the html into the multiplicationTable div
+			$("#multiplicationTable").html(mtable);
+			
+		}
+	});
+//]]>
+</script>
+
+<style type="text/css">
+body, div, td, li {
+	font-family: sans-serif;
+	font-size: 10pt;
+	color: #000099;
+}
+#heading {
+	color: #009900;
+	font-size: 14pt;
+	font-weight: bold;
+}
+.subheading, .tdhead{
+	font-size: 12 pt;
+	font-weight: bold;
+	margin-top: 20px;
+}
+.tdhead{
+	background: #acacac;
+	text-align: center;
+}
+
+#errorlist {
+	color: #990000;
+	font-size: 12 pt;
+	font-weight: bold;
+	margin-top: 20px;
+}
+#multiplicationTable{
+	width: 80%;
+	margin-left: 10% ;
+	margin-right: 10% ;
+	text-align: center;
+}
+#multiplicationTable td{
+	width: 30px;
+	border: 1px solid black;
+}
+#multiplicationTable table{
+	margin: 0 auto ;
+}
+table{
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+</style>
+</head>
+<body>
+<div id="heading">Javascript Multiplication</div>
+
+<div class="subheading">Minimum and Maximum Values</div>
+<div> 
+Please enter the minimum and maximum values you would like to create a multiplication table for.
+<br />
+The numbers must be between 0 and 100 and the maximum value must be larger than the minimum
+</div>
+
+<div id="errorlist"></div>
+
+<form method="post" id="frm" action="">
+
+<table>
+<tr><td>Minimum Value:</td><td><input type="text" name="minval" id="minval" class="required comparison" /></td></tr>
+<tr><td>Maximum Value:</td><td><input type="text" name="maxval" id="maxval" class="required comparison" /></td></tr>
+<tr><td></td><td><input type="submit" id="submitBtn" value="Generate Table" /></td></tr>
+</table>
+
+</form>
+<div id="multiplicationTable"> </div>
+
+</body>
+</html>

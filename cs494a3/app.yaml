@@ -1,0 +1,40 @@
+service: cs494a3
+api_version: 1
+runtime: php55
+threadsafe: true
+
+default_expiration: "1m"
+
+handlers:
+- url: /(.*\.css)$
+  static_files: css/\1
+  upload: css/(.*\.css)$
+
+- url: /(.*\.js)$
+  static_files: css/\1
+  upload: js/(.*\.css)$
+
+- url: /index.php
+  script: index.php
+
+- url: /setup
+  script: index2.php
+
+- url: /strings.php
+  script: strings.php
+
+- url: /session.php
+  script: session.php
+
+- url: /storedInfo.php
+  script: storedInfo.php
+
+- url: /input.php
+  script: input.php
+
+env_variables:
+  # Replace USER, PASSWORD, DATABASE, and CONNECTION_NAME with the
+  # values obtained when configuring your Cloud SQL instance.
+  MYSQL_DSN: mysql:unix_socket=/cloudsql/jamm8888cs:us-central1:jamm8888cs;dbname=cs494a3;charset=utf8mb4
+  MYSQL_USER: cs494a3cs
+  MYSQL_PASSWORD: rFN2Mipd0CKwHevf

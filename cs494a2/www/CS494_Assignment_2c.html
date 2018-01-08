@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<title>Local Storage and Error Handling</title>
+<script type="text/javascript" src="js/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="js/jquery.validate.min.js"></script>
+
+<style type="text/css">
+body, div, td, li {
+	font-family: sans-serif;
+	font-size: 10pt;
+	color: #000099;
+}
+#heading {
+	color: #009900;
+	font-size: 14pt;
+	font-weight: bold;
+}
+.subheading {
+	font-size: 12 pt;
+	font-weight: bold;
+	margin-top: 20px;
+}
+</style>
+<script type="text/javascript">
+//<![CDATA[
+$(document).ready(function() {
+
+	// allows the validate to work from he jquery.validate library.
+	
+	$("#frm").validate();
+	
+	function displayError(){	
+	
+		// identify the error
+		$("#storeContents").html("Invalid Data for input. Please use only Letters, numbers and spaces in the field.");
+		
+	}
+	
+	function validatedata(dataField){
+	
+		// set the regex to check for letters numbers and spaces
+		var isString = /^[\w ]+$/;
+		
+		// test the string if match return true otherwise false
+		if(isString.test(dataField))
+			return true;
+		else	
+			return false;
+	}
+	
+	function checkLocal(){
+	
+		// http://mathiasbynens.be/notes/localstorage-pattern
+		
+		// store the result of the try catch 
+		var storageEnabled = (function() {
+			try {
+				// attempt write
+				localStorage.setItem("test", "test");
+				// attempt read
+				localStorage.getItem("test");
+				// attempt move
+				localStorage.removeItem("test");
+				// if all goes well return true
+				return true;
+			} catch(e) {
+				// otherwise return false
+				return false;
+			}
+		}());
+		
+		// return the boolean value
+		return storageEnabled;
+	}
+	
+	// http://stackoverflow.com/questions/11589387/load-txt-file-using-jquery-or-ajax
+	// http://www.smashingmagazine.com/2010/10/11/local-storage-and-how-to-use-it/
+	$("#submitBtn").bind('click', function() {
+	
+		if(checkLocal()){
+		
+				// set dataField to the entered value in the input field
+				var dataField = $("#storeData").val();
+			
+				// if the dataField contains acceptable characters
+				if(validatedata(dataField)){
+				
+					// store it in local storage
+					localStorage["store"] = $("#storeData").val();
+					
+					// let the user know it was saved.
+					$("#storeContents").html("Saved.");
+					
+				} else {
+				
+					// identify the error
+					displayError();
+					
+				}
+				
+		} else {
+		
+			// identify the error
+			$("#storeContents").html("Local Storage is disabled on the client.");
+		}
+		
+		// stop the post response
+		return false;
+		
+	});
+		
+	$("#clearBtn").bind('click', function() {
+	
+		// remove the items from the store.
+		localStorage.removeItem("store");
+		
+		// Let the user know it was cleared
+		$("#storeContents").text("Cleared.");
+		
+		// stop post response
+		return false;
+		
+	});
+		
+	$("#prependBtn").bind('click', function() {
+	
+		// set dataField to the entered value in the input field
+		var dataField = $("#storeData").val();
+	
+		// if the dataField contains acceptable characters
+		if(validatedata(dataField)){
+		
+			// prepend the data to existing data
+			localStorage["store"] = $("#storeData").val() + localStorage["store"];
+			
+			// Let the user know the data was prepended
+			$("#storeContents").text("Prepended.");
+		
+		} else {
+		
+			// identify the error
+			displayError();
+			
+		}
+		
+		// stop the post response
+		return false;
+		
+	});
+		
+	$("#appendBtn").bind('click', function() {
+	
+		// set dataField to the entered value in the input field
+		var dataField = $("#storeData").val();
+	
+		// if the dataField contains acceptable characters
+		if(validatedata(dataField)){
+		
+			localStorage["store"] = localStorage["store"] + $("#storeData").val(); 
+			$("#storeContents").text("Appended.");
+		
+		} else {
+		
+			// identify the error
+			displayError();
+			
+		}
+		
+		// stop the post response
+		return false;
+		
+	});
+		
+	$("#displayBtn").bind('click', function() {
+	
+		// get the value of the stored data
+		var storageValue = localStorage["store"];
+		
+		if(storageValue){
+		
+			// display the contents
+			$("#storeContents").text(storageValue);
+			
+		} else {
+		
+			// identify the error
+			$("#storeContents").html("No data stored to display.");
+			
+		}
+		
+		// stop the post response
+		return false;
+		
+	});
+	
+});
+//]]>
+</script>
+</head>
+<body>
+
+<div id="heading">Local Storage and Error Handling</div>
+<div class="subheading">Enter the data to add to local storage.  Please only enter letters, numbers and spaces.</div>
+
+<form method="post" id="frm" action="">
+	<table>
+		<tr><td>Input a string:</td><td><input type="text" name="storeData" id="storeData" class="required" maxlength="30" /></td><td></td><td></td><td></td></tr>
+		<tr><td><input type="submit" id="submitBtn" value="Save String" /></td><td><input type="submit" id="clearBtn" value="Clear String" /></td><td><input type="submit" id="prependBtn" value="Prepend" /></td><td><input type="submit" id="appendBtn" value="Append" /></td><td><input type="submit" id="displayBtn" value="Display String" /></td></tr>
+	</table>
+</form>
+
+<div id="contents">
+	<div class="subheading">Output:</div>
+	<div id="storeContents"> </div>
+</div>
+
+</body>
+</html>

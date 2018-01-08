@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<title>Basic Ajax</title>
+
+<script type="text/javascript" src="js/jquery-1.11.0.min.js"></script>
+<style type="text/css">
+body, div, td, li {
+	font-family: sans-serif;
+	font-size: 10pt;
+	color: #000099;
+}
+.heading {
+	color: #009900;
+	font-size: 12pt;
+	font-weight: bold;
+}
+.subheading {
+	font-size: 11 pt;
+	font-weight: bold;
+	margin-top: 20px;
+}
+#coursestaken tr{
+	cursor: pointer;
+}
+#contents{
+	border: 2px solid black;
+}
+#currentFile{
+	width: 800px;
+}
+</style>
+<script type="text/javascript">
+
+$(document).ready(function() {
+
+	// http://stackoverflow.com/questions/11589387/load-txt-file-using-jquery-or-ajax	
+	$("#submitBtn").bind('click', function() {
+	
+		// get the window location portion of the url
+		//http://stackoverflow.com/questions/9145118/how-do-i-remove-get-variables-and-filename-from-url-using-javascript-jquery
+		var href = window.location.href.toString();
+		href = href.substring(0, href.lastIndexOf("/") + 1);
+		
+		// add it to the file name chosen
+		var txt = href + ($("#fileChosen").val());
+
+		// set the currentFile field to show the chosen file.
+		$("#currentFile").val(txt);
+		
+		// get the file - if there is a 404 or 403 error deal with it.
+		// http://stackoverflow.com/questions/2955947/how-do-i-get-the-http-status-code-with-jquery
+		$.ajax({
+			url:txt, 
+			type:"GET", 
+			dataType:"text",
+			success:fnsuccess, 
+			statusCode: {
+				403: function(xhr, request, url) {
+					// set the error message
+					var errorMsg = ""+
+						"The requested page was:  " + this.url + "<br />" +
+						"The error number returned was:  " + xhr.status + "<br />" +
+						"The error message was:  " + xhr.responseText + "<br />";
+					// append onto existing error
+					$("#pageContent").append(errorMsg);
+				},
+				404: function(xhr, request, url) {
+					// set the error message
+					var errorMsg = ""+
+						"The requested page was:  " + this.url + txt + "<br />" +
+						"The error number returned was:  " + xhr.status + "<br />" +
+						"The error message was:  " + xhr.responseText + "<br />";
+						
+					// append onto existing error
+					$("#pageContent").append(errorMsg);
+				},
+			error:fnerror()
+			}
+		});
+	
+		// 
+		function fnsuccess(data) {
+			if(data) {
+				// display the retrieved data in pageContent as text
+				$("#pageContent").text(data);
+			}
+			else
+				fnerror();
+		}
+		
+		function fnerror(){
+			// display Error 
+			$("#pageContent").html("<div class='subheading'><b>Error Occured:</b></div>");
+		}
+		
+		return false;
+	});
+});
+
+</script>
+
+</head>
+<body>
+<div class="heading">Basic Ajax</div>
+
+<div class="subheading">Choose a file to display the contents for:</div>
+<form method = "post" id="frm" action="">
+
+<table>
+<tr><td>Current File Being Viewed:</td><td><input type="text" name="currentFile" id="currentFile" disabled="disabled" /></td></tr>
+<tr><td>File to View:</td>
+<td>
+<select name="fileChosen" id="fileChosen">
+<option value="test1.txt">test1.txt</option>
+<option value="test2.txt">test2.txt</option>
+<option value="test3.txt">test3.txt</option>
+<option value="File Not Found.txt">404 Error</option>
+<option value="403test.txt">403 Error File unreadable</option>
+</select>
+</td>
+</tr>
+<tr><td></td><td><input type="submit" id="submitBtn" value="Get File Contents" /></td></tr>
+</table>
+</form>
+<div id="contents">
+<div class="heading">Other Page Content</div>
+<div id="pageContent"></div>
+</div>
+</body>
+</html>
